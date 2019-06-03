@@ -7,6 +7,19 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <!--
+        \Lobby/
+        Session Wins
+        Session Games
+        Session Username
+        Session Hitrate
+        Board
+        Find Game button
         
+        \Game/
+        2 Windows
+        w1 your ships
+        w2 enemy ships
+        -->
     </Grid>
 </Window>

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace BaseNetwork
 {
+    [Serializable]
     public class NetworkObject
     {
         public int dataLenght { get { return objectLength + 4; } }

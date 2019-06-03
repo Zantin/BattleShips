@@ -13,10 +13,13 @@ namespace BattleShipsServer
     {
         static void Main(string[] args)
         {
-            Server server = new Server(2500, Console.OpenStandardOutput());
-            Console.SetOut(server.writer);
-            server.Initialize();
-            server.Start();
+            MatchmakingServer matchmakingServer = new MatchmakingServer();
+            matchmakingServer.SetOutputStream(Console.OpenStandardOutput());
+            Console.SetOut(matchmakingServer.GetWriter());
+            matchmakingServer.Bind(IPAddress.Any, 2500);
+            matchmakingServer.SetBacklog(4);
+            matchmakingServer.Initialize();
+            matchmakingServer.Start();
             Console.ReadKey();
         }
     }

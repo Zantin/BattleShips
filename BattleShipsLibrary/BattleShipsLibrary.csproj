@@ -4,17 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BAECFF1D-9487-478D-A9B6-93241934F613}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>BattleShipsServer</RootNamespace>
-    <AssemblyName>BattleShipsServer</AssemblyName>
+    <ProjectGuid>{31C703D1-D139-435D-ACBE-241B0D5AD8AA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>BattleShipsLibrary</RootNamespace>
+    <AssemblyName>BattleShipsLibrary</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +23,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -43,22 +41,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MatchmakingServer.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="AttackBoard.cs" />
+    <Compile Include="NetworkPlayer.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Game.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
+    <Compile Include="Ship.cs" />
+    <Compile Include="ShipBoard.cs" />
+    <Compile Include="Vector2i.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BaseNetwork\BaseNetwork.csproj">
-      <Project>{f50b1f43-a613-435e-aa01-803fab2cf75c}</Project>
+      <Project>{F50B1F43-A613-435E-AA01-803FAB2CF75C}</Project>
       <Name>BaseNetwork</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BattleShipsLibrary\BattleShipsLibrary.csproj">
-      <Project>{31c703d1-d139-435d-acbe-241b0d5ad8aa}</Project>
-      <Name>BattleShipsLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -8,19 +8,20 @@ using System.Threading.Tasks;
 
 namespace BaseNetwork
 {
-    public abstract class BaseClientConnection
+    /// <summary>
+    /// This is the Connection from the Server to the client
+    /// </summary>
+    public class BaseClientConnection
     {
         private Socket clientSocket;
         private Thread thread;
         private NetworkStream ns;
-        private BaseServer server;
 
         private bool keepAlive = true;
 
-        public BaseClientConnection(Socket clientSocket, BaseServer server)
+        public BaseClientConnection(Socket clientSocket)
         {
             this.clientSocket = clientSocket;
-            this.server = server;
             this.ns = new NetworkStream(clientSocket);
         }
 
@@ -35,22 +36,17 @@ namespace BaseNetwork
             keepAlive = false;
         }
 
-        public virtual BaseClientConnection GetThis()
-        {
-            return this;
-        }
-
         protected virtual void HandleConnection()
         {
             throw new NotImplementedException("Don't use the default 'HandleConnection' function. Create your own");
         }
 
-        protected virtual void Send(params object[] objects)
+        public virtual void Send(params object[] objects)
         {
             Network.SendData(ns, objects);
         }
 
-        protected virtual List<object> ReadPacket()
+        protected List<object> ReadPacket()
         {
            return Network.GetEverything(ns);
         }

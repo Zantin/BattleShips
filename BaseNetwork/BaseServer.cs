@@ -12,33 +12,26 @@ namespace BaseNetwork
 {
     public abstract class BaseServer
     {
-        Socket serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        protected Socket serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         Thread connectionThread;
-        public bool isRunning { get; }
+        public bool isRunning { get; private set; }
         public List<BaseClientConnection> clients = new List<BaseClientConnection>();
-        public Stream outputStream;
-        public StreamWriter writer;
-        protected bool isInitialized = false;
+        private Stream outputStream;
+        private StreamWriter writer;
+        private bool isInitialized = false;
+        private bool isBound = false;
+        private bool isListening = false;
         
         /// <summary>
-        /// Create a Server that listens on the ipAddress and port provided
+        /// Empty Constructor
         /// </summary>
-        /// <param name="iPAddress"></param>
-        /// <param name="port"></param>
-        public BaseServer(IPAddress iPAddress, int port, Stream outputStream)
-        {
-            serverSocket.Bind(new IPEndPoint(iPAddress, port));
-            serverSocket.Listen(4);
-            isRunning = true;
-            if (outputStream != null)
-                this.outputStream = outputStream;
-            else
-                this.outputStream = new BufferedStream(new MemoryStream(4096));
-            writer = new StreamWriter(outputStream);
-            writer.AutoFlush = true;
-            WriteLine(String.Format("Listening on IP: {0} port: {1}", ByteArrayToString(iPAddress.GetAddressBytes()), port));
-        }
+        public BaseServer()
+        { }
 
+        /// <summary>
+        /// Converts a byte array to a string
+        /// </summary>
+        /// <param name="bytes">The byte array to convert</param>
         private string ByteArrayToString(byte[] bytes)
         {
             StringBuilder sb = new StringBuilder();
@@ -49,27 +42,71 @@ namespace BaseNetwork
         }
 
         /// <summary>
-        /// Creates a Server that listens on the IP-Address and port provided
+        /// Bind the socket to a Network Interface
         /// </summary>
-        /// <param name="iPAddress">The IP-Address of the Network Interface</param>
-        /// <param name="port">The port to listen on</param>
-        public BaseServer(IPAddress iPAddress, int port) : this(iPAddress, port, null)
-        { }
+        /// <param name="ip">The ip to bind</param>
+        /// <param name="port">The port to bind</param>
+        public void Bind(IPAddress ip, int port)
+        {
+            Bind(new IPEndPoint(ip, port));
+        }
 
         /// <summary>
-        /// Creates a Server, With a redirected output, that listens on all available Network interfaces
+        /// Bind the socket to a Network Interface
         /// </summary>
-        /// <param name="port">The port to listen on</param>
-        public BaseServer(int port, Stream outputStream) : this(IPAddress.Any, port, outputStream)
-        { }
+        /// <param name="endPoint">The ip and port to bind to</param>
+        public void Bind(IPEndPoint endPoint)
+        {
+            serverSocket.Bind(endPoint);
+            isBound = true;
+        }
 
         /// <summary>
-        /// Creates a Server that listens on all available Network interfaces
+        /// Set the amount of connection that be in queue
         /// </summary>
-        /// <param name="port">The port to listen on</param>
-        public BaseServer(int port) : this(IPAddress.Any, port, null)
-        { }
+        /// <param name="number">The amount</param>
+        public void SetBacklog(int number)
+        {
+            serverSocket.Listen(number);
+            isListening = true;
+        }
 
+        /// <summary>
+        /// Returns the current outputStream
+        /// Creates one if none existent
+        /// </summary>
+        public Stream GetStream()
+        {
+            if (outputStream == null)
+                SetOutputStream(new MemoryStream(4096));
+            return outputStream;
+        }
+
+        /// <summary>
+        /// Changes the current outputStream to the one provided and create a new writer for that stream
+        /// </summary>
+        /// <param name="stream">The new stream</param>
+        public void SetOutputStream(Stream stream)
+        {
+            outputStream = stream;
+            writer = new StreamWriter(outputStream);
+        }
+
+        /// <summary>
+        /// Returns the current writer
+        /// Creates one if none existent
+        /// </summary>
+        public StreamWriter GetWriter()
+        {
+            if (writer == null)
+                SetOutputStream(new MemoryStream(4096));
+            return writer;
+        }
+
+        /// <summary>
+        /// Initializes the server, allowing it to start
+        /// </summary>
+        /// <param name="awaitConnectionDelegate">The Method to run</param>
         public void Initialize(ThreadStart awaitConnectionDelegate)
         {
             if (awaitConnectionDelegate != null)
@@ -82,15 +119,32 @@ namespace BaseNetwork
 
         /// <summary>
         /// Starts the server (Creates a new thread that waits for connections)
+        /// Can only start if it's been bound to an IP and port, Is in listening state and Is Initialized
         /// </summary>
         public void Start()
         {
-            if(isInitialized)
+            bool error = false;
+
+            if(!isListening)
             {
+                error = true;
+                WriteError("Server is not in Listening state");
+            }
+            if(!isBound)
+            {
+                error = true;
+                WriteError("Server is not bound to an IP or Port");
+            }
+            if(!isInitialized)
+            {
+                error = true;
+                WriteError("Server is not initialized!");
+            }
+            if(!error)
+            {
+                isRunning = true;
                 connectionThread.Start();
             }
-            else
-                WriteError("Server is not initialized!");
         }
 
         private void AwaitConnection()
