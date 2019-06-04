@@ -11,11 +11,11 @@ namespace BattleShipsLibrary
     public class NetworkPlayer
     {
         public Player player;
-        public BaseClientConnection clientConnection;
+        public ClientConnection clientConnection;
 
         //Player connects to the server, and sends their username
 
-        public NetworkPlayer(BaseClientConnection clientConnection)
+        public NetworkPlayer(ClientConnection clientConnection)
         {
             this.clientConnection = clientConnection;
             player = new Player();

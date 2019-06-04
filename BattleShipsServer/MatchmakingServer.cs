@@ -12,11 +12,11 @@ using BattleShipsLibrary;
 
 namespace BattleShipsServer
 {
-    public class MatchmakingServer : BaseNetwork.BaseServer
+    public class MatchmakingServer : BaseServer
     {
         private Random rand = new Random();
-        private List<Socket> clients = new List<Socket>();
         private List<Game> aktiveGames = new List<Game>();
+        private List<ClientConnection> clients = new List<ClientConnection>();
         public MatchmakingServer()
         { }
 
@@ -30,21 +30,23 @@ namespace BattleShipsServer
             WriteLine("Hello From the matchmaking server");
             while(isRunning)
             {
-                clients.Add(serverSocket.Accept());
+                clients.Add(new ClientConnection(serverSocket.Accept()));
                 while(clients.Count >= 2)
                 {
-                    Socket player1 = GetRandomPlayer();
-                    
-                    Socket player2 = GetRandomPlayer();
-                    aktiveGames.Add(new Game(new NetworkPlayer(new BaseClientConnection(player1)), new NetworkPlayer(new BaseClientConnection(player2))));
+                    ClientConnection player1 = GetRandomPlayer();
+
+                    ClientConnection player2 = GetRandomPlayer();
+                    Game game = new Game(new NetworkPlayer(player1), new NetworkPlayer(player2));
+                    aktiveGames.Add(game);
+
 
                 }
             }
         }
 
-        private Socket GetRandomPlayer()
+        private ClientConnection GetRandomPlayer()
         {
-            Socket player = clients.ElementAt(rand.Next(clients.Count -1));
+            ClientConnection player = clients.ElementAt(rand.Next(clients.Count -1));
             clients.Remove(player);
             return player;
         }

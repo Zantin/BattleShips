@@ -11,13 +11,15 @@ namespace BaseNetwork
     /// <summary>
     /// This is the Connection from the Server to the client
     /// </summary>
-    public class BaseClientConnection
+    public abstract class BaseClientConnection
     {
-        private Socket clientSocket;
+        protected Socket clientSocket;
         private Thread thread;
-        private NetworkStream ns;
+        protected NetworkStream ns;
+        protected BaseServer server;
 
-        private bool keepAlive = true;
+        protected bool keepAlive { get; private set; } = true;
+        protected bool isInitialized = false;
 
         public BaseClientConnection(Socket clientSocket)
         {
@@ -25,10 +27,27 @@ namespace BaseNetwork
             this.ns = new NetworkStream(clientSocket);
         }
 
-        public void Start()
+        public void Initialize(ThreadStart handleConnectionDelegate)
         {
-            thread = new Thread(new ThreadStart(HandleConnection));
-            thread.Start();
+            if (handleConnectionDelegate != null)
+                thread = new Thread(new ThreadStart(handleConnectionDelegate));
+            else
+                thread = new Thread(new ThreadStart(HandleConnection));
+
+            isInitialized = true;
+        }
+
+        public void SetBaseServer(BaseServer server)
+        {
+            this.server = server;
+        }
+
+        public void Start(ThreadStart threadStart)
+        {
+            if (isInitialized)
+                thread.Start();
+            else
+                throw new Exception("Connection not Initialized");
         }
 
         public void Stop()

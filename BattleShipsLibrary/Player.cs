@@ -12,6 +12,8 @@ namespace BattleShipsLibrary
         public AttackBoard attackBoard;
         public ShipBoard shipBoard;
 
+        public Vector2i nextAttack;
+
         public int wins { get; private set; }
         public int loss { get; private set; }
         public int games { get { return wins + loss; } }

@@ -15,7 +15,6 @@ namespace BaseNetwork
         protected Socket serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         Thread connectionThread;
         public bool isRunning { get; private set; }
-        public List<BaseClientConnection> clients = new List<BaseClientConnection>();
         private Stream outputStream;
         private StreamWriter writer;
         private bool isInitialized = false;
