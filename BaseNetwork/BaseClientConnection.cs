@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace BaseNetwork
 {
+    /* Rewrite this class so it only handles the network part.
+     * There by only sending packets and returning read packets
+     */
+
+
     /// <summary>
     /// This is the Connection from the Server to the client
     /// </summary>
@@ -69,6 +71,6 @@ namespace BaseNetwork
         {
            return Network.GetEverything(ns);
         }
-
+        
     }
 }

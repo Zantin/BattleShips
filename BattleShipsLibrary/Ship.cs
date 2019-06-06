@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BattleShipsLibrary
 {
@@ -10,24 +7,22 @@ namespace BattleShipsLibrary
     public class Ship
     {
         public Orientation orientation;
-        public Vector2i[] positions;
-        public int size { get { return positions.Length; } }
-        public bool isAlive { get { return life <= 0; } }
-        public int life;
+        public ShipPart[] shipParts;
+        public int size { get { return shipParts.Length; } }
+        public bool isAlive { get { return shipParts.Count(x => x.isHit == false) > 0; } }
 
         public Ship(int size)
         {
-            positions = new Vector2i[size];
-            life = size;
+            shipParts = new ShipPart[size];
         }
 
         public bool IsOverlapping(Ship other)
         {
-            foreach (Vector2i pos in positions)
+            foreach (ShipPart shipPart in shipParts)
             {
-                foreach (Vector2i pos2 in other.positions)
+                foreach (ShipPart otherShipPart in other.shipParts)
                 {
-                    if (pos.Equals(pos2))
+                    if (shipPart.position.Equals(otherShipPart.position))
                         return true;
                 }
             }
@@ -40,17 +35,45 @@ namespace BattleShipsLibrary
         /// <param name="hitPos">The 'x','y' cordinate of the attack</param>
         public bool IsHit(Vector2i hitPos)
         {
-            foreach(Vector2i pos in positions)
+            foreach(ShipPart shipPart in shipParts)
             {
-                if(hitPos.Equals(pos))
+                if(hitPos.Equals(shipPart.position))
                 {
-                    life--;
+                    shipPart.Hit();
                     return true;
                 }
             }
             return false;
         }
 
+    }
+
+    [Serializable]
+    public class ShipPart
+    {
+        public Vector2i position { get; private set; }
+        public bool isHit { get; private set; }
+
+        public ShipPart(Vector2i position)
+        {
+            this.position = position;
+            isHit = false;
+        }
+
+        public void Hit()
+        {
+            isHit = true;
+        }
+
+        public void Reset()
+        {
+            isHit = false;
+        }
+
+        public void NewPosition(Vector2i position)
+        {
+            this.position = position;
+        }
     }
 
     public enum Orientation

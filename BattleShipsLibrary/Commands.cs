@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BattleShipsLibrary
+﻿namespace BattleShipsLibrary
 {
     public enum ClientToServer
     {
         Attack,
         GiveUp,
+        ThisIsMe,
     }
 
     public enum ServerToClient
@@ -20,5 +15,6 @@ namespace BattleShipsLibrary
         Hit,
         Miss,
         YourTurn,
+        BattleReady,
     }
 }

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
 
 namespace BattleShipsLibrary
@@ -10,11 +7,11 @@ namespace BattleShipsLibrary
     public class ClientConnection : BaseNetwork.BaseClientConnection
     {
         private List<object> packet;
-        private Player player;
-        private Game game;
+        private NetworkPlayer networkPlayer;
 
-        public ClientConnection(Socket clientSocket) : base(clientSocket)
+        public ClientConnection(Socket clientSocket, NetworkPlayer networkPlayer) : base(clientSocket)
         {
+            this.networkPlayer = networkPlayer;
             Initialize(new ThreadStart(HandleConnection));
         }
 
@@ -33,10 +30,15 @@ namespace BattleShipsLibrary
 
         private void HandleCommand()
         {
-            switch ((Commands)packet[1])
+            switch ((ClientToServer)packet[1])
             {
-                case Commands.Attack:
-                    player.nextAttack = (Vector2i)packet[2];
+                case ClientToServer.Attack:
+                    networkPlayer.player.nextAttack = (Vector2i)packet[2];
+                    break;
+                case ClientToServer.GiveUp:
+                    break;
+                case ClientToServer.ThisIsMe:
+                    networkPlayer.SetPlayer((Player)packet[2]);
                     break;
                 default:
                     break;
@@ -50,14 +52,8 @@ namespace BattleShipsLibrary
 
         public void SendEnemyUsername(string username)
         {
-            Send(Commands.EnemyUsername, username);
+            Send(ServerToClient.EnemyUsername, username);
         }
-
-        public void SetGame(Game game)
-        {
-            this.game = game;
-        }
-
 
     }
 }

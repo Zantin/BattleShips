@@ -38,8 +38,6 @@ namespace BattleShipsServer
                     ClientConnection player2 = GetRandomPlayer();
                     Game game = new Game(new NetworkPlayer(player1), new NetworkPlayer(player2));
                     aktiveGames.Add(game);
-
-
                 }
             }
         }

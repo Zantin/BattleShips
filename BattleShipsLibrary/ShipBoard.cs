@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BattleShipsLibrary
 {
@@ -40,17 +38,27 @@ namespace BattleShipsLibrary
             return false;
         }
 
+        /// <summary>
+        /// Returns whether a ship is hit or not at the provided position
+        /// </summary>
+        /// <param name="x">The 'x' cordinate</param>
+        /// <param name="y">The 'y' cordinate to attack</param>
         public bool Attack(int x, int y)
         {
             return Attack(new Vector2i(x, y));
         }
 
+        /// <summary>
+        /// Returns whether a ship is hit or not at the provided position
+        /// </summary>
+        /// <param name="hitPos">The position to test for</param>
         public bool Attack(Vector2i hitPos)
         {
             foreach (Ship ship in ships)
             {
-                if (ship.Hit(hitPos))
-                    return true;
+                if(ship.isAlive)
+                    if (ship.IsHit(hitPos))
+                        return true;
             }
             return false;
         }

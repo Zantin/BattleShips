@@ -1,17 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BattleShipsLibrary
+﻿namespace BattleShipsLibrary
 {
-    [Serializable]
     public class AttackBoard
     {
-        public int size;
         public int hits;
         public int misses;
         public int shots { get { return (hits + misses); } }
+
+        private bool[,] attacked;
+        private bool[,] hitOrMiss;
+
+        public AttackBoard(int size)
+        {
+            attacked = new bool[size, size];
+            hitOrMiss = new bool[size, size];
+        }
+
+        public void UpdateBoard(Vector2i pos, bool hit)
+        {
+            attacked[pos.x, pos.y] = true;
+            hitOrMiss[pos.x, pos.y] = hit;
+
+            if (hit)
+                hits++;
+            else
+                misses++;
+        }
+
+
     }
 }

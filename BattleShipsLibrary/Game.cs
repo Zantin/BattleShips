@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Net;
-using System.Net.Sockets;
-using System.IO;
-using BattleShipsLibrary;
+﻿using System.Threading;
 
 namespace BattleShipsLibrary
 {
@@ -29,9 +21,6 @@ namespace BattleShipsLibrary
         /// </summary>
         public void Start()
         {
-            player1.clientConnection.SetGame(this);
-            player2.clientConnection.SetGame(this);
-
             Play();
         }
 
