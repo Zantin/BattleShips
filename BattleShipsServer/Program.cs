@@ -20,7 +20,9 @@ namespace BattleShipsServer
             matchmakingServer.SetBacklog(4);
             matchmakingServer.Initialize();
             matchmakingServer.Start();
-            Console.ReadKey();
+            while (Console.ReadKey(true).KeyChar != 'q')
+            { }
+            Console.WriteLine("Stoping Server");
         }
     }
 

@@ -9,10 +9,15 @@ namespace BattleShipsLibrary
         private List<object> packet;
         private NetworkPlayer networkPlayer;
 
-        public ClientConnection(Socket clientSocket, NetworkPlayer networkPlayer) : base(clientSocket)
+        public ClientConnection(Socket clientSocket) : base(clientSocket)
+        {
+            
+            Initialize(new ThreadStart(HandleConnection));
+        }
+
+        public void BindNetworkPlayer(NetworkPlayer networkPlayer)
         {
             this.networkPlayer = networkPlayer;
-            Initialize(new ThreadStart(HandleConnection));
         }
 
         protected override void HandleConnection()

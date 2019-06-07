@@ -8,6 +8,7 @@
         public NetworkPlayer(ClientConnection clientConnection)
         {
             this.clientConnection = clientConnection;
+            this.clientConnection.BindNetworkPlayer(this);
         }
 
         public void SetPlayer(Player player)

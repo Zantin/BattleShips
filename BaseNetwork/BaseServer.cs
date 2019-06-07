@@ -99,6 +99,7 @@ namespace BaseNetwork
         {
             if (writer == null)
                 SetOutputStream(new MemoryStream(4096));
+            writer.AutoFlush = true;
             return writer;
         }
 

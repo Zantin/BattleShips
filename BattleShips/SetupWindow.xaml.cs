@@ -24,5 +24,12 @@ namespace BattleShips
         {
             InitializeComponent();
         }
+
+        private void BigGrid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Point pos = e.GetPosition(this);
+            MessageBox.Show(string.Format("Left: {0} | Middle: {1} | Right: {2} \nPos: X:{3} Y:{4} \nCell: ({5},{6})", e.LeftButton, e.MiddleButton, e.RightButton, pos.X, pos.Y, (int)pos.X/32, (int)pos.Y/32));
+
+        }
     }
 }
