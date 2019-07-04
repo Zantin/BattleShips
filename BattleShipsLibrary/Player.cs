@@ -5,7 +5,6 @@ namespace BattleShipsLibrary
     [Serializable]
     public class Player
     {
-        public AttackBoard attackBoard;
         public ShipBoard shipBoard;
 
         public Vector2i nextAttack;

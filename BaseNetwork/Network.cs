@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BaseNetwork
 {
-    public class Network
+    public abstract class Network
     {
         private static BinaryFormatter formatter = new BinaryFormatter();
 
@@ -65,7 +65,6 @@ namespace BaseNetwork
         /// <summary>
         /// Deserializes the byte[] and returns it as an object.
         /// </summary>
-        /// <param name="ns">The NetworkStream to read from</param>
         private static object DeserializeObject(byte[] objectData)
         {
             object obj;

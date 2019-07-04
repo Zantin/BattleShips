@@ -5,12 +5,14 @@
         public int hits;
         public int misses;
         public int shots { get { return (hits + misses); } }
+        public int size;
 
-        private bool[,] attacked;
-        private bool[,] hitOrMiss;
+        public bool[,] attacked;
+        public bool[,] hitOrMiss;
 
         public AttackBoard(int size)
         {
+            this.size = size;
             attacked = new bool[size, size];
             hitOrMiss = new bool[size, size];
         }

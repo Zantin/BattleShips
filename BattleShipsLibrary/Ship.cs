@@ -6,15 +6,28 @@ namespace BattleShipsLibrary
     [Serializable]
     public class Ship
     {
+        public bool isPlaced { get; private set; }
         public Orientation orientation;
         public ShipPart[] shipParts;
         public int size { get { return shipParts.Length; } }
         public bool isAlive { get { return shipParts.Count(x => x.isHit == false) > 0; } }
 
-        public Ship(int size)
+        public Ship(Orientation orientation, Vector2i startPos, int size)
         {
+            this.orientation = orientation;
             shipParts = new ShipPart[size];
+            for(int i = 0; i < size; i++)
+            {
+                if(orientation == Orientation.Horizontal)
+                    shipParts[i] = new ShipPart(new Vector2i(startPos.x + i, startPos.y));
+                else
+                    shipParts[i] = new ShipPart(new Vector2i(startPos.x, startPos.y+i));
+
+            }
         }
+
+        public Ship(Orientation orientation, int startX, int startY, int size) : this(orientation, new Vector2i(startX, startY), size)
+        { }
 
         public bool IsOverlapping(Ship other)
         {

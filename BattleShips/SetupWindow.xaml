@@ -5,18 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BattleShips"
         mc:Ignorable="d"
-        Title="MainWindow" Height="375" Width="525">
+        Title="MainWindow" Height="375" Width="525" ResizeMode="CanMinimize">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="340"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="340"/>
-        </Grid.RowDefinitions>
+        <local:MyCanvas gridSize="10" cellWidth="32" cellHeight="32" x:Name="canvasBoard" isSetupWindow="True" drawShips="True" Margin="10,10,10,10" MouseDown="BigGrid_MouseDown"/>
+        <Button Width="128" Height="32" Margin="360,298,31,16" Content="Play!" Click="Button_Click"/>
+    </Grid>
 
-        <local:BigGrid Width="320" Height="320" MouseDown="BigGrid_MouseDown"/>
-        <!--
+    <!--
         \Lobby/
         Session Wins
         Session Games
@@ -30,5 +25,4 @@
         w1 your ships
         w2 enemy ships
         -->
-    </Grid>
 </Window>

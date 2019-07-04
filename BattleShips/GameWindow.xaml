@@ -1,0 +1,13 @@
+﻿<Window x:Class="BattleShips.GameWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BattleShips"
+        mc:Ignorable="d"
+        Title="GameWindow" Height="720" Width="360">
+    <StackPanel Margin="0,10,0,10">
+        <local:MyCanvas gridSize="10" cellWidth="32" cellHeight="32" x:Name="attackCanvas" isSetupWindow="False" drawShips="False" drawAttacks="True" drawBlanks="True" Margin="0,10,0,10" MouseDown="AttackBoard_MouseDown" Height="320" Width="320"/>
+        <local:MyCanvas gridSize="10" cellWidth="32" cellHeight="32" x:Name="shipCanvas" isSetupWindow="False" drawShips="True" drawAttacks="True" drawBlanks="False" Margin="0,10,0,10" Height="320" Width="320"/>
+    </StackPanel>
+</Window>
