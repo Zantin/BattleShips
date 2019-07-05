@@ -45,6 +45,7 @@
     <Compile Include="ClientConnection.cs" />
     <Compile Include="Commands.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="ICallbackAble.cs" />
     <Compile Include="NetworkPlayer.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

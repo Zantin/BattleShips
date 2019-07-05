@@ -134,9 +134,11 @@ namespace BattleShips
             Player player = new Player();
             player.shipBoard = this.shipBoard;
             player.username = "Testing";
+            Connection connection = new Connection();
+            
             this.IsEnabled = false;
 
-            new GameWindow().Show();
+            new GameWindow(connection, player).Show();
         }
     }
 }
