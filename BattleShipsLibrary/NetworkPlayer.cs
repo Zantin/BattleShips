@@ -3,17 +3,16 @@
     public class NetworkPlayer
     {
         public ClientConnection clientConnection;
-        public Player player { get; private set; }
+        public Player player { get { return clientConnection.player; } }
 
         public NetworkPlayer(ClientConnection clientConnection)
         {
             this.clientConnection = clientConnection;
-            this.clientConnection.BindNetworkPlayer(this);
         }
 
-        public void SetPlayer(Player player)
+        public void Send(params object[] objects)
         {
-            this.player = player;
+            clientConnection.Send(objects);
         }
     }
 }

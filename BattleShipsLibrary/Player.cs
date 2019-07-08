@@ -19,6 +19,8 @@ namespace BattleShipsLibrary
 
         public string username { get; set; }
 
+        public bool isAlive { get { return shipBoard.shipsAlive > 0; } }
+
         public Player()
         {
             wins = 0;

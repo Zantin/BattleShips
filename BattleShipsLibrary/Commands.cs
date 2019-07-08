@@ -12,6 +12,7 @@
         Win,
         Loss,
         EnemyUsername,
+        EnemyAttack,
         Hit,
         Miss,
         YourTurn,

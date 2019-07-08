@@ -28,7 +28,8 @@ namespace BattleShips
         {
             socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
-            socket.Connect(new IPEndPoint(new IPAddress(new byte[] { 192, 168, 4, 250 }), 25000));
+            //socket.Connect(new IPEndPoint(new IPAddress(new byte[] { 192, 168, 4, 250 }), 25000));
+            socket.Connect(new IPEndPoint(new IPAddress(new byte[] { 192, 168, 0, 63 }), 25000));
 
             ns = new NetworkStream(socket);
 
@@ -38,12 +39,12 @@ namespace BattleShips
 
         public void Attack(Vector2i pos)
         {
-            Network.SendData(ns, pos);
+            Network.SendData(ns, ClientToServer.Attack, pos);
         }
 
         public void ThisIsMe(Player player)
         {
-            Network.SendData(ns, player);
+            Network.SendData(ns, ClientToServer.ThisIsMe, player);
         }
 
         private void ThreadReader()
@@ -54,7 +55,7 @@ namespace BattleShips
                 {
                     foreach(ICallbackAble callback in subscribers)
                     {
-                        callback.Receive()
+                        callback.Receive(Network.GetEverything(ns));
                     }
                 }
                 Thread.Sleep(100);
@@ -63,7 +64,7 @@ namespace BattleShips
 
         public void Subscribe(ICallbackAble callback)
         {
-
+            subscribers.Add(callback);
         }
 
         //            return (ServerToClient)Network.GetEverything(ns)[0] == ServerToClient.Hit;

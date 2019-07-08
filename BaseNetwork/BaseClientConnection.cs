@@ -44,7 +44,7 @@ namespace BaseNetwork
             this.server = server;
         }
 
-        public void Start(ThreadStart threadStart)
+        public void Start()
         {
             if (isInitialized)
                 thread.Start();

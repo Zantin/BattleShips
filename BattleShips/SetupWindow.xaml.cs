@@ -24,7 +24,6 @@ namespace BattleShips
     public partial class MainWindow : Window
     {
         private ShipBoard shipBoard;
-        private AttackBoard attackBoard;
 
         private Random rand = new Random();
 
@@ -33,9 +32,6 @@ namespace BattleShips
             InitializeComponent();
             shipBoard = new ShipBoard(canvasBoard.gridSize, new Vector2i(2, 1), new Vector2i(3, 2), new Vector2i(4, 1), new Vector2i(5, 1));
             canvasBoard.SetShipBoard(shipBoard);
-            attackBoard = new AttackBoard(canvasBoard.gridSize);
-            canvasBoard.SetAttackBoard(attackBoard);
-
         }
 
         private Vector2i firstPoint;
@@ -135,10 +131,11 @@ namespace BattleShips
             player.shipBoard = this.shipBoard;
             player.username = "Testing";
             Connection connection = new Connection();
-            
+            connection.ThisIsMe(player);
+
             this.IsEnabled = false;
 
-            new GameWindow(connection, player).Show();
+            new GameWindow(connection, player);
         }
     }
 }

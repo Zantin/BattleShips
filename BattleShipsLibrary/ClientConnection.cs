@@ -7,17 +7,13 @@ namespace BattleShipsLibrary
     public class ClientConnection : BaseNetwork.BaseClientConnection
     {
         private List<object> packet;
-        private NetworkPlayer networkPlayer;
+        public Player player;
+
+        public string ip { get { return clientSocket.RemoteEndPoint.ToString();} }
 
         public ClientConnection(Socket clientSocket) : base(clientSocket)
         {
-            
             Initialize(new ThreadStart(HandleConnection));
-        }
-
-        public void BindNetworkPlayer(NetworkPlayer networkPlayer)
-        {
-            this.networkPlayer = networkPlayer;
         }
 
         protected override void HandleConnection()
@@ -38,12 +34,12 @@ namespace BattleShipsLibrary
             switch ((ClientToServer)packet[1])
             {
                 case ClientToServer.Attack:
-                    networkPlayer.player.nextAttack = (Vector2i)packet[2];
+                    player.nextAttack = (Vector2i)packet[2];
                     break;
                 case ClientToServer.GiveUp:
                     break;
                 case ClientToServer.ThisIsMe:
-                    networkPlayer.SetPlayer((Player)packet[2]);
+                    player = ((Player)packet[2]);
                     break;
                 default:
                     break;

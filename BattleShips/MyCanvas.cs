@@ -29,10 +29,10 @@ namespace BattleShips
 
         private long[] timings = new long[6];
 
-        private ShipBoard shipBoard = new ShipBoard(10);
-        public Vector2i firstPoint = new Vector2i();
+        private ShipBoard shipBoard;
+        public Vector2i firstPoint;
 
-        private AttackBoard attackBoard = new AttackBoard(10);
+        private AttackBoard attackBoard;
 
         static MyCanvas()
         {

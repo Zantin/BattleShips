@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -23,20 +23,77 @@ namespace BattleShips
         Connection connection;
         Player player;
         AttackBoard attackBoard;
+        AttackBoard enemyAttacks;
+
+        Thread t = Thread.CurrentThread;
+
+        private List<object> result;
+
         public GameWindow(Connection connection, Player player)
         {
             InitializeComponent();
             this.connection = connection;
             this.player = player;
+            attackBoard = new AttackBoard(player.shipBoard.boardSize);
+            attackCanvas.SetAttackBoard(attackBoard);
+            shipCanvas.SetShipBoard(player.shipBoard);
+            enemyAttacks = new AttackBoard(player.shipBoard.boardSize);
+            shipCanvas.SetAttackBoard(enemyAttacks);
+            
             connection.Subscribe(this);
-            connection.ThisIsMe(player);
         }
 
         public void Receive(List<object> result)
         {
-            if(result[0].GetType() == typeof(ServerToClient))
-            {
+            this.result = result;
+            Dispatcher.Invoke(Handle);
+        }
 
+        private void Handle()
+        {
+            if (result[1].GetType() == typeof(ServerToClient))
+            {
+                ServerToClient command = (ServerToClient)result[1];
+                if (command == ServerToClient.Hit)
+                {
+                    attackBoard.UpdateBoard((Vector2i)result[2], true);
+                    attackCanvas.InvalidateVisual();
+                }
+                else if (command == ServerToClient.Miss)
+                {
+                    attackBoard.UpdateBoard((Vector2i)result[2], false);
+                    attackCanvas.InvalidateVisual();
+                }
+                else if (command == ServerToClient.Win)
+                {
+                    player.AddWin();
+                    player.AddHits(attackBoard.hits);
+                    player.AddMiss(attackBoard.misses);
+                }
+                else if (command == ServerToClient.Loss)
+                {
+                    player.AddLoss();
+                    player.AddHits(attackBoard.hits);
+                    player.AddMiss(attackBoard.misses);
+                }
+                else if (command == ServerToClient.BattleReady)
+                {
+                    this.Show();
+                }
+                else if (command == ServerToClient.YourTurn)
+                {
+                    //Added if something special should happen
+                }
+                else if (command == ServerToClient.EnemyAttack)
+                {
+                   enemyAttacks.UpdateBoard((Vector2i)result[2], (bool)result[3]);
+                   shipCanvas.InvalidateVisual();
+                }
+                else if (command == ServerToClient.EnemyUsername)
+                {
+                    Title = string.Format("Enemy: {0}", (string)result[1]);
+                }
+                
             }
         }
 
@@ -47,8 +104,10 @@ namespace BattleShips
                 Point pos = e.GetPosition(attackCanvas);
                 if ((pos.X >= 0 && pos.X < attackCanvas.gridWidth) && (pos.Y >= 0 && pos.Y < attackCanvas.gridHeight))
                 {
-                    Vector2i attack = new Vector2i((int)pos.X / attackCanvas.gridWidth, (int)pos.Y / attackCanvas.gridHeight);
+                    Vector2i attack = new Vector2i((int)pos.X / attackCanvas.cellWidth, (int)pos.Y / attackCanvas.cellHeight);
+                    connection.Attack(attack);
                 }
+                //MessageBox.Show(string.Format("X: {0} Y: {1}", ((int)pos.X / attackCanvas.cellWidth).ToString(), ((int)pos.Y / attackCanvas.cellHeight).ToString()));
             }
         }
     }

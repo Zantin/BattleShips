@@ -16,7 +16,7 @@ namespace BattleShipsServer
             MatchmakingServer matchmakingServer = new MatchmakingServer();
             matchmakingServer.SetOutputStream(Console.OpenStandardOutput());
             Console.SetOut(matchmakingServer.GetWriter());
-            matchmakingServer.Bind(IPAddress.Any, 2500);
+            matchmakingServer.Bind(IPAddress.Any, 25000);
             matchmakingServer.SetBacklog(4);
             matchmakingServer.Initialize();
             matchmakingServer.Start();

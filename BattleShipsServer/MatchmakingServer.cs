@@ -31,12 +31,18 @@ namespace BattleShipsServer
             while(isRunning)
             {
                 clients.Add(new ClientConnection(serverSocket.Accept()));
+                clients.Last().Start();
+                WriteLine("New connection from: " + clients.Last().ip);
                 while(clients.Count >= 2)
                 {
+                    WriteLine("New Game Started");
                     ClientConnection player1 = GetRandomPlayer();
-
                     ClientConnection player2 = GetRandomPlayer();
-                    Game game = new Game(new NetworkPlayer(player1), new NetworkPlayer(player2));
+                    WriteLine("Player1: " + player1.ip);
+                    WriteLine("Player2: " + player2.ip);
+
+                    Game game = new Game(new NetworkPlayer(player1), new NetworkPlayer(player2), this);
+                    game.Start();
                     aktiveGames.Add(game);
                 }
             }
@@ -47,6 +53,11 @@ namespace BattleShipsServer
             ClientConnection player = clients.ElementAt(rand.Next(clients.Count -1));
             clients.Remove(player);
             return player;
+        }
+
+        public void EndGame(Game game)
+        {
+            aktiveGames.Remove(game);
         }
     }
 }
