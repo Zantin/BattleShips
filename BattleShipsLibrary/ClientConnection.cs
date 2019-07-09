@@ -37,6 +37,7 @@ namespace BattleShipsLibrary
                     player.nextAttack = (Vector2i)packet[2];
                     break;
                 case ClientToServer.GiveUp:
+                    player.isGivingUp = true;
                     break;
                 case ClientToServer.ThisIsMe:
                     player = ((Player)packet[2]);

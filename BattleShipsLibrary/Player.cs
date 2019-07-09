@@ -17,6 +17,8 @@ namespace BattleShipsLibrary
         public int miss { get; private set; }
         public int shots { get { return hits + miss; } }
 
+        public bool isGivingUp = false;
+
         public string username { get; set; }
 
         public bool isAlive { get { return shipBoard.shipsAlive > 0; } }

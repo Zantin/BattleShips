@@ -24,16 +24,18 @@ namespace BattleShips
         Player player;
         AttackBoard attackBoard;
         AttackBoard enemyAttacks;
+        MainWindow mainWindow;
 
-        Thread t = Thread.CurrentThread;
+        private bool gameOver = false;
 
         private List<object> result;
 
-        public GameWindow(Connection connection, Player player)
+        public GameWindow(Connection connection, Player player, MainWindow mainWindow)
         {
             InitializeComponent();
             this.connection = connection;
             this.player = player;
+            this.mainWindow = mainWindow;
             attackBoard = new AttackBoard(player.shipBoard.boardSize);
             attackCanvas.SetAttackBoard(attackBoard);
             shipCanvas.SetShipBoard(player.shipBoard);
@@ -69,12 +71,20 @@ namespace BattleShips
                     player.AddWin();
                     player.AddHits(attackBoard.hits);
                     player.AddMiss(attackBoard.misses);
+                    connection.CloseConnection();
+                    mainWindow.Activate();
+                    mainWindow.IsEnabled = true;
+                    gameOver = true;
                 }
                 else if (command == ServerToClient.Loss)
                 {
                     player.AddLoss();
                     player.AddHits(attackBoard.hits);
                     player.AddMiss(attackBoard.misses);
+                    connection.CloseConnection();
+                    mainWindow.Activate();
+                    mainWindow.IsEnabled = true;
+                    gameOver = true;
                 }
                 else if (command == ServerToClient.BattleReady)
                 {
@@ -86,12 +96,17 @@ namespace BattleShips
                 }
                 else if (command == ServerToClient.EnemyAttack)
                 {
-                   enemyAttacks.UpdateBoard((Vector2i)result[2], (bool)result[3]);
-                   shipCanvas.InvalidateVisual();
+                    enemyAttacks.UpdateBoard((Vector2i)result[2], (bool)result[3]);
+                    shipCanvas.InvalidateVisual();
                 }
                 else if (command == ServerToClient.EnemyUsername)
                 {
                     Title = string.Format("Enemy: {0}", (string)result[1]);
+                }
+                else if (command == ServerToClient.EnemyShips)
+                {
+                    attackCanvas.SetShipBoard((ShipBoard)result[2]);
+                    attackCanvas.drawBlanks = false;
                 }
                 
             }
@@ -105,9 +120,25 @@ namespace BattleShips
                 if ((pos.X >= 0 && pos.X < attackCanvas.gridWidth) && (pos.Y >= 0 && pos.Y < attackCanvas.gridHeight))
                 {
                     Vector2i attack = new Vector2i((int)pos.X / attackCanvas.cellWidth, (int)pos.Y / attackCanvas.cellHeight);
-                    connection.Attack(attack);
+                    if (!attackBoard.attacked[attack.x,attack.y])
+                        connection.Attack(attack);
                 }
                 //MessageBox.Show(string.Format("X: {0} Y: {1}", ((int)pos.X / attackCanvas.cellWidth).ToString(), ((int)pos.Y / attackCanvas.cellHeight).ToString()));
+            }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if(!gameOver)
+            {
+                connection.GiveUp();
+            }
+            if(!connection.isClosed)
+                connection.CloseConnection();
+            if (!mainWindow.IsEnabled)
+            {
+                mainWindow.Activate();
+                mainWindow.IsEnabled = true;
             }
         }
     }

@@ -10,6 +10,11 @@ namespace BattleShipsLibrary
         public int boardSize;
         public List<Ship> ships = new List<Ship>();
         public int shipsAlive { get { return ships.Count(x => x.isAlive); } }
+
+        /// <summary>
+        /// X component is the ship Size
+        /// Y component is the amount of ships allowed
+        /// </summary>
         public Vector2i[] allowedShips;
 
         /// <summary>
@@ -133,6 +138,16 @@ namespace BattleShipsLibrary
         public void RemoveShip(Ship ship)
         {
             ships.Remove(ship);
+        }
+
+        public bool IsAllShipsPlaced()
+        {
+            foreach (Vector2i allowedShip in allowedShips)
+            {
+                if (allowedShip.y != ships.Count(x => x.size == allowedShip.x))
+                    return false;
+            }
+            return true;
         }
     }
 }

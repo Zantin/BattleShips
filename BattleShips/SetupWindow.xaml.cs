@@ -24,13 +24,16 @@ namespace BattleShips
     public partial class MainWindow : Window
     {
         private ShipBoard shipBoard;
+        private Player player;
 
         private Random rand = new Random();
 
         public MainWindow()
         {
+            player = new Player();
             InitializeComponent();
             shipBoard = new ShipBoard(canvasBoard.gridSize, new Vector2i(2, 1), new Vector2i(3, 2), new Vector2i(4, 1), new Vector2i(5, 1));
+            player.shipBoard = shipBoard;
             canvasBoard.SetShipBoard(shipBoard);
         }
 
@@ -127,15 +130,15 @@ namespace BattleShips
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Player player = new Player();
-            player.shipBoard = this.shipBoard;
-            player.username = "Testing";
-            Connection connection = new Connection();
-            connection.ThisIsMe(player);
+            if(shipBoard.IsAllShipsPlaced())
+            {
+                Connection connection = new Connection();
+                connection.ThisIsMe(player);
 
-            this.IsEnabled = false;
+                this.IsEnabled = false;
 
-            new GameWindow(connection, player);
+                new GameWindow(connection, player, this);
+            }
         }
     }
 }

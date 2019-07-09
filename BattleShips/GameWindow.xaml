@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BattleShips"
         mc:Ignorable="d"
-        Title="GameWindow" Height="740" Width="360">
+        Title="GameWindow" Height="740" Width="360" Closing="Window_Closing">
     <StackPanel Margin="0,10,0,10">
-        <local:MyCanvas gridSize="10" cellWidth="32" cellHeight="32" x:Name="attackCanvas" isSetupWindow="False" drawShips="False" drawAttacks="True" drawBlanks="True" Margin="0,10,0,10" MouseDown="AttackBoard_MouseDown" Height="320" Width="320"/>
-        <local:MyCanvas gridSize="10" cellWidth="32" cellHeight="32" x:Name="shipCanvas" isSetupWindow="False" drawShips="True" drawAttacks="True" drawBlanks="False" Margin="0,10,0,10" Height="320" Width="320"/>
+        <local:MyCanvas gridSize="10" cellWidth="32" cellHeight="32" x:Name="attackCanvas" isSetupWindow="False" drawMisses="False" drawShips="False" drawAttacks="True" drawBlanks="True" Margin="0,10,0,10" MouseDown="AttackBoard_MouseDown" Height="320" Width="320"/>
+        <local:MyCanvas gridSize="10" cellWidth="32" cellHeight="32" x:Name="shipCanvas" isSetupWindow="False" drawMisses="True" drawShips="True" drawAttacks="True" drawBlanks="False" Margin="0,10,0,10" Height="320" Width="320"/>
     </StackPanel>
 </Window>

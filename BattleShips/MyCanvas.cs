@@ -22,6 +22,7 @@ namespace BattleShips
         public static DependencyProperty drawShipsProperty;
         public static DependencyProperty drawAttacksProperty;
         public static DependencyProperty drawBlanksProperty;
+        public static DependencyProperty drawMissesProperty;
 
         public static DependencyProperty isSetupWindowProperty;
 
@@ -43,6 +44,7 @@ namespace BattleShips
             drawShipsProperty = DependencyProperty.Register("drawShips", typeof(bool), typeof(MyCanvas));
             drawAttacksProperty = DependencyProperty.Register("drawAttacks", typeof(bool), typeof(MyCanvas));
             drawBlanksProperty = DependencyProperty.Register("drawBlanks", typeof(bool), typeof(MyCanvas));
+            drawMissesProperty = DependencyProperty.Register("drawMisses", typeof(bool), typeof(MyCanvas));
 
             isSetupWindowProperty = DependencyProperty.Register("isSetupWindow", typeof(bool), typeof(MyCanvas));
         }
@@ -83,6 +85,12 @@ namespace BattleShips
             set { base.SetValue(drawBlanksProperty, value); }
         }
 
+        public bool drawMisses
+        {
+            get { return (bool)base.GetValue(drawMissesProperty); }
+            set { base.SetValue(drawMissesProperty, value); }
+        }
+
         public bool isSetupWindow
         {
             get { return (bool)base.GetValue(isSetupWindowProperty); }
@@ -105,6 +113,7 @@ namespace BattleShips
         SolidColorBrush waterBrush = new SolidColorBrush(Color.FromRgb(64, 64, 255));
         SolidColorBrush shipBrush = new SolidColorBrush(Color.FromRgb(64, 255, 64));
         SolidColorBrush hitBrush = new SolidColorBrush(Color.FromRgb(255, 64, 64));
+        SolidColorBrush missBrush = new SolidColorBrush(Color.FromRgb(192, 192, 64));
         SolidColorBrush blankBrush = new SolidColorBrush(Color.FromRgb(224, 224, 224));
 
         Pen shipPen = new Pen(Brushes.Black, 0.0);
@@ -207,8 +216,10 @@ namespace BattleShips
                         if (attackBoard.attacked[x, y])
                         {
                             if (attackBoard.hitOrMiss[x, y])
-                                DrawPolygon(dc, new Cross(x * cellWidth, y * cellHeight, cellWidth, cellHeight).polygon);
-                                //Draw Cross = Hit
+                                DrawPolygon(dc, new Cross(x * cellWidth, y * cellHeight, cellWidth, cellHeight).polygon, hitBrush);
+                            else if(drawMisses)
+                                DrawPolygon(dc, new Cross(x * cellWidth, y * cellHeight, cellWidth, cellHeight).polygon, missBrush);
+                            //Draw Cross = Hit
                         }
                         else if(drawBlanks)
                             dc.DrawRectangle(blankBrush, gridPen, new Rect(x * cellWidth, y * cellHeight, cellWidth, cellHeight));
@@ -268,7 +279,7 @@ namespace BattleShips
             this.InvalidateVisual();
         }
 
-        public void DrawPolygon(DrawingContext dc, Polygon polygon)
+        public void DrawPolygon(DrawingContext dc, Polygon polygon, SolidColorBrush color)
         {
             StreamGeometry streamGeometry = new StreamGeometry();
             using (StreamGeometryContext geometryContext = streamGeometry.Open())
@@ -277,7 +288,7 @@ namespace BattleShips
                 geometryContext.PolyLineTo(polygon.Points.Skip(1).ToArray(), true, false);
             }
 
-            dc.DrawGeometry(hitBrush, gridPen, streamGeometry);
+            dc.DrawGeometry(color, gridPen, streamGeometry);
         }
 
         

@@ -21,6 +21,7 @@ namespace BattleShips
         public bool isConnected { get { return socket.Connected; } }
 
         private bool keepAlive = true;
+        public bool isClosed = false;
 
         private List<ICallbackAble> subscribers = new List<ICallbackAble>();
 
@@ -47,6 +48,11 @@ namespace BattleShips
             Network.SendData(ns, ClientToServer.ThisIsMe, player);
         }
 
+        public void GiveUp()
+        {
+            Network.SendData(ns, ClientToServer.GiveUp);
+        }
+
         private void ThreadReader()
         {
             while(keepAlive)
@@ -60,6 +66,12 @@ namespace BattleShips
                 }
                 Thread.Sleep(100);
             }
+            isClosed = true;
+        }
+
+        public void CloseConnection()
+        {
+            keepAlive = false;
         }
 
         public void Subscribe(ICallbackAble callback)

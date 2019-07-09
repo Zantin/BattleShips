@@ -72,6 +72,8 @@ namespace BattleShipsServer
                 player1.Send(ServerToClient.Loss);
                 player2.Send(ServerToClient.Loss);
             }
+            player1.Send(ServerToClient.EnemyShips, player2.player.shipBoard);
+            player2.Send(ServerToClient.EnemyShips, player1.player.shipBoard);
             server.EndGame(this);
         }
 
@@ -82,7 +84,13 @@ namespace BattleShipsServer
 
         private void Round(NetworkPlayer currentPlayer, NetworkPlayer otherPlayer)
         {
-            if (currentPlayer.player.shipBoard.shipsAlive > 0)
+            if(currentPlayer.player.isGivingUp)
+            {
+                currentPlayer.player.isGivingUp = false;
+                currentPlayer.Send(ServerToClient.Loss);
+                otherPlayer.Send(ServerToClient.Win);
+            }
+            else if (currentPlayer.player.shipBoard.shipsAlive > 0)
             {
 
                 NotifyPlayer(currentPlayer);
