@@ -71,7 +71,6 @@ namespace BattleShips
                     player.AddWin();
                     player.AddHits(attackBoard.hits);
                     player.AddMiss(attackBoard.misses);
-                    connection.CloseConnection();
                     mainWindow.Activate();
                     mainWindow.IsEnabled = true;
                     gameOver = true;
@@ -81,7 +80,6 @@ namespace BattleShips
                     player.AddLoss();
                     player.AddHits(attackBoard.hits);
                     player.AddMiss(attackBoard.misses);
-                    connection.CloseConnection();
                     mainWindow.Activate();
                     mainWindow.IsEnabled = true;
                     gameOver = true;
@@ -105,8 +103,10 @@ namespace BattleShips
                 }
                 else if (command == ServerToClient.EnemyShips)
                 {
+                    // Error here!
                     attackCanvas.SetShipBoard((ShipBoard)result[2]);
                     attackCanvas.drawBlanks = false;
+                    attackCanvas.InvalidateVisual();
                 }
                 
             }
