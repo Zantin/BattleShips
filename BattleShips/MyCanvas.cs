@@ -121,6 +121,27 @@ namespace BattleShips
 
         protected override void OnRender(DrawingContext dc)
         {
+            DrawGrid(dc);
+
+            if (drawShips)
+            {
+                DrawShips(dc);
+            }
+
+            if (drawAttacks)
+            {
+                DrawAttacks(dc);
+            }
+
+            if (isSetupWindow)
+            {
+                DrawText(dc);
+                if (firstPoint != null)
+                    dc.DrawEllipse(shipBrush, gridPen, new Point((firstPoint.x + 0.5) * cellWidth, (firstPoint.y + 0.5) * cellHeight), cellWidth / 4, cellHeight / 4);
+            }
+
+            #region DebugDrawTime
+            /*
             timings[5]++;
 
             stopwatch.Start();
@@ -166,18 +187,14 @@ namespace BattleShips
                 if (firstPoint != null)
                     dc.DrawEllipse(shipBrush, gridPen, new Point((firstPoint.x + 0.5) * cellWidth, (firstPoint.y + 0.5) * cellHeight), cellWidth / 4, cellHeight / 4);
 
-                /*
-                Debug.WriteLine("This.Width = {0} | This.ActualWidth = {1} | CellWidth = {2}", this.Width, this.ActualWidth, this.cellWidth);
-                dc.DrawRectangle(blankBrush, gridPen, new Rect(gridWidth + 35, gridHeight - cellHeight, (this.ActualWidth - gridWidth) - 60, cellHeight));
-                dc.DrawText(new FormattedText(txt, CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black), new Point(gridWidth + (this.ActualWidth - gridWidth)/2 -10 , gridHeight - cellHeight + cellHeight/4));
-                */
-
             }
 
             //dc.DrawText(new FormattedText(title, CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 20, Brushes.White), new Point(0, 0));
 
             //new Point((part.position.x + 0.5) * cellWidth, (part.position.y + 0.5) * cellHeight), cellWidth / 4, cellHeight / 4);
             stopwatch.Reset();
+            */
+            #endregion
         }
 
         private void DrawGrid(DrawingContext dc)
@@ -259,11 +276,11 @@ namespace BattleShips
 
         private void DrawText(DrawingContext dc)
         {
-            dc.DrawText(new FormattedText(txt1, CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black), new Point(335, 10.5));
-            dc.DrawText(new FormattedText(txt2 + (1 - shipBoard.GetAmountOfShipOfSize(2)) , CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 14, Brushes.Black), new Point(364.5, 30.5));
-            dc.DrawText(new FormattedText(txt3 + (2 - shipBoard.GetAmountOfShipOfSize(3)), CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 14, Brushes.Black), new Point(364.5, 50.5));
-            dc.DrawText(new FormattedText(txt4 + (1 - shipBoard.GetAmountOfShipOfSize(4)), CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 14, Brushes.Black), new Point(364.5, 70.5));
-            dc.DrawText(new FormattedText(txt5 + (1 - shipBoard.GetAmountOfShipOfSize(5)), CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 14, Brushes.Black), new Point(364.5, 90.5));
+            dc.DrawText(new FormattedText(txt1, CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 16, Brushes.Black), new Point(345.5, 10.5));
+            dc.DrawText(new FormattedText(txt2 + (shipBoard.GetAmountOfShipAllowedOfSize(2) - shipBoard.GetAmountOfShipOfSize(2)) , CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 14, Brushes.Black), new Point(375, 30.5));
+            dc.DrawText(new FormattedText(txt3 + (shipBoard.GetAmountOfShipAllowedOfSize(3) - shipBoard.GetAmountOfShipOfSize(3)), CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 14, Brushes.Black), new Point(375, 50.5));
+            dc.DrawText(new FormattedText(txt4 + (shipBoard.GetAmountOfShipAllowedOfSize(4) - shipBoard.GetAmountOfShipOfSize(4)), CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 14, Brushes.Black), new Point(375, 70.5));
+            dc.DrawText(new FormattedText(txt5 + (shipBoard.GetAmountOfShipAllowedOfSize(5) - shipBoard.GetAmountOfShipOfSize(5)), CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 14, Brushes.Black), new Point(375, 90.5));
 
         }
 

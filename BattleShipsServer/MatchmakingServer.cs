@@ -38,8 +38,6 @@ namespace BattleShipsServer
                     WriteLine("New Game Started");
                     ClientConnection player1 = GetRandomPlayer();
                     ClientConnection player2 = GetRandomPlayer();
-                    WriteLine("Player1: " + player1.ip);
-                    WriteLine("Player2: " + player2.ip);
 
                     Game game = new Game(new NetworkPlayer(player1), new NetworkPlayer(player2), this);
                     game.Start();

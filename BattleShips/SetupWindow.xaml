@@ -5,10 +5,27 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BattleShips"
         mc:Ignorable="d"
-        Title="MainWindow" Height="385" Width="535" ResizeMode="CanMinimize">
+        Title="MainWindow" Height="395" Width="545" ResizeMode="CanMinimize">
     <Grid>
         <local:MyCanvas gridSize="10" cellWidth="32" cellHeight="32" x:Name="canvasBoard" isSetupWindow="True" drawShips="True" Margin="10,10,10,10" MouseDown="BigGrid_MouseDown"/>
-        <Button Width="128" Height="32" Margin="358,296,33,18" Content="Play!" Click="Button_Click"/>
+        <Button Width="128" Height="32" Margin="363,298,38,26" Content="Play!" Click="Button_Click"/>
+        <StackPanel Margin="385,121,55,70">
+            <Label Content="Session Stats" Width="80" Height="24"/>
+            <Label Name="game_label" Width="98" Height="24"/>
+            <Label Name="wins_label" Width="98" Height="24"/>
+            <Label Name="loss_label" Width="98" Height="24"/>
+            <Label Name="shots_label" Width="98" Height="24"/>
+            <Label Name="hits_label" Width="98" Height="24"/>
+            <Label Name="miss_label" Width="98" Height="24"/>
+        </StackPanel>
+        <!--
+        <Label Content="Games: 10" Width="120" Height="24" Margin="370,141,39,191"/>
+        <Label Content="Wins: 10" Width="120" Height="24" Margin="370,161,39,171"/>
+        <Label Content="Loss: 10" Width="120" Height="24" Margin="370,181,39,151"/>
+        <Label Content="Shots: 10" Width="120" Height="24" Margin="370,201,39,131"/>
+        <Label Content="Hits: 10" Width="120" Height="24" Margin="370,221,39,111"/>
+        <Label Content="Miss: 10" Width="120" Height="24" Margin="370,241,39,91"/>
+        -->
     </Grid>
 
     <!--

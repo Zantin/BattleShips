@@ -24,17 +24,20 @@ namespace BattleShips
     public partial class MainWindow : Window
     {
         private ShipBoard shipBoard;
-        private Player player;
+        public Player player { get; set; }
 
         private Random rand = new Random();
 
         public MainWindow()
         {
+            Options.LoadOptions();
             player = new Player();
             InitializeComponent();
-            shipBoard = new ShipBoard(canvasBoard.gridSize, new Vector2i(2, 1), new Vector2i(3, 2), new Vector2i(4, 1), new Vector2i(5, 1));
+            UpdateStats();
+            shipBoard = new ShipBoard(canvasBoard.gridSize, Options.allowedShips.ToArray());
             player.shipBoard = shipBoard;
             canvasBoard.SetShipBoard(shipBoard);
+            
         }
 
         private Vector2i firstPoint;
@@ -116,16 +119,6 @@ namespace BattleShips
                     }
                 }
             }
-
-
-            //shipBoard.AddShip(new Ship(Orientation.Horizontal, 1,1,3));
-            //canvasBoard.SetShips(shipBoard);
-            //shipBoard.AddShip(new Ship(Orientation.Vertical,3,4,3));
-            //shipBoard.AddShip(new Ship(Orientation.Horizontal, 5,5,4));
-            //shipBoard.AddShip(new Ship(Orientation.Vertical, 4, 4, 3));
-
-
-
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -139,6 +132,16 @@ namespace BattleShips
 
                 new GameWindow(connection, player, this);
             }
+        }
+
+        public void UpdateStats()
+        {
+            game_label.Content = string.Format("Games: {0,6}", player.games);
+            wins_label.Content = string.Format("Wins: {0,9}", player.wins);
+            loss_label.Content = string.Format("Loss: {0,10}", player.loss);
+            shots_label.Content = string.Format("Shots: {0,8}", player.shots);
+            hits_label.Content = string.Format("Hits: {0,11}", player.hits);
+            miss_label.Content = string.Format("Miss: {0,10}", player.miss);
         }
     }
 }

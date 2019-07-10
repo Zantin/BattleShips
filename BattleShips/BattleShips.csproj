@@ -73,6 +73,7 @@
     </Compile>
     <Compile Include="BigGrid.cs" />
     <Compile Include="MyCanvas.cs" />
+    <Compile Include="Options.cs" />
     <Compile Include="SetupWindow.xaml.cs">
       <DependentUpon>SetupWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

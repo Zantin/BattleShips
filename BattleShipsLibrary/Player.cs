@@ -25,8 +25,6 @@ namespace BattleShipsLibrary
 
         public Player()
         {
-            wins = 0;
-            loss = 0;
         }
 
         public void AddWin()
