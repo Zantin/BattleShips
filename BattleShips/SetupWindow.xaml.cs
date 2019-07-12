@@ -94,8 +94,10 @@ namespace BattleShips
                         if (!(firstPoint.y == secondPoint.y || firstPoint.x == secondPoint.x))
                             secondPoint = null;
 
+                        
                         else if (firstPoint.y == secondPoint.y && firstPoint.x == secondPoint.x)
                             secondPoint = null;
+                        
                     }
 
                     if (firstPoint != null && secondPoint != null)

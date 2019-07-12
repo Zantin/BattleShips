@@ -27,7 +27,7 @@ namespace BattleShipsServer
 
         private void AwaitConnection()
         {
-            WriteLine("Hello From the matchmaking server");
+            WriteLine(string.Format("Server Started: {0}:{1}", LocalIPAddress().ToString(),25000));
             while(isRunning)
             {
                 clients.Add(new ClientConnection(serverSocket.Accept()));
@@ -56,6 +56,20 @@ namespace BattleShipsServer
         public void EndGame(Game game)
         {
             aktiveGames.Remove(game);
+        }
+
+        private IPAddress LocalIPAddress()
+        {
+            if (!System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
+            {
+                return null;
+            }
+
+            IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
+
+            return host
+                .AddressList
+                .FirstOrDefault(ip => ip.AddressFamily == AddressFamily.InterNetwork);
         }
     }
 }

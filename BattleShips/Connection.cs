@@ -31,7 +31,7 @@ namespace BattleShips
         {
             socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
-            if (Options.serverIP == null || Options.serverPort == -1)
+            if (!Options.optionsLoaded || Options.firsteTimeSetup)
                 Options.LoadOptions();
 
             socket.Connect(new IPEndPoint(new IPAddress(Options.serverIP), Options.serverPort));

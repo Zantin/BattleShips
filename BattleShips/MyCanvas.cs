@@ -135,7 +135,9 @@ namespace BattleShips
 
             if (isSetupWindow)
             {
+                /*
                 DrawText(dc);
+                */
                 if (firstPoint != null)
                     dc.DrawEllipse(shipBrush, gridPen, new Point((firstPoint.x + 0.5) * cellWidth, (firstPoint.y + 0.5) * cellHeight), cellWidth / 4, cellHeight / 4);
             }
@@ -268,6 +270,7 @@ namespace BattleShips
                 dc.DrawRectangle(shipBrush, shipPen, new Rect(ship.shipParts[0].position.x * cellWidth + cellWidth / 4, ship.shipParts[0].position.y * cellHeight + cellHeight / 2, cellWidth / 2, (ship.size - 1) * cellHeight));
         }
 
+        /*
         private const string txt1 = "Ship Size | Ships Left";
         private const string txt2 = "    2     |      ";
         private const string txt3 = "    3     |      ";
@@ -283,6 +286,7 @@ namespace BattleShips
             dc.DrawText(new FormattedText(txt5 + (shipBoard.GetAmountOfShipAllowedOfSize(5) - shipBoard.GetAmountOfShipOfSize(5)), CultureInfo.InvariantCulture, FlowDirection.LeftToRight, new Typeface("Arial"), 14, Brushes.Black), new Point(375, 90.5));
 
         }
+        */
 
         public void SetShipBoard(ShipBoard shipBoard)
         {

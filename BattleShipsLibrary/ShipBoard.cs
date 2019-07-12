@@ -114,7 +114,12 @@ namespace BattleShipsLibrary
 
         public int GetAmountOfShipAllowedOfSize(int size)
         {
-            return allowedShips.FirstOrDefault(x => x.x == size).y;
+            var t = allowedShips.FirstOrDefault(x => x.x == size);
+            if (t != null)
+                return t.y;
+            else
+                return 0;
+
         }
 
         public Ship ContainsShip(int x, int y)

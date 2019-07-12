@@ -19,13 +19,16 @@ namespace BattleShips
         public static int gridSize = -1;
         public static int cellWidth = -1;
         public static int cellHeight = -1;
-        
+
+        public static bool firsteTimeSetup = false;
+        public static bool optionsLoaded = false;
+
         public static void LoadOptions()
         {
             if (!File.Exists(Directory.GetCurrentDirectory() + "/options.txt"))
             {
                 CreateOptionsFile();
-                MessageBox.Show("Options file was not found.\nCreated an options file at the application folder");
+                MessageBox.Show("Options file was not found.\nCreated an options file in the application folder");
             }
             if (File.Exists(Directory.GetCurrentDirectory() + "/options.txt"))
             {
@@ -52,10 +55,8 @@ namespace BattleShips
                         line = line.Split(':')[1];
                         int.TryParse(line.Trim(), out serverPort);
                     }
-                    else if(line.StartsWith("Ship:"))
+                    else if (line.StartsWith("Ship:"))
                     {
-                        int size;
-                        int amount;
                         line = line.Split(':')[1];
                         string[] lines;
                         if (line.Contains(","))
@@ -63,10 +64,11 @@ namespace BattleShips
                         else
                             lines = line.Split('.');
 
-                        int.TryParse(lines[0].Trim(), out size);
-                        int.TryParse(lines[1].Trim(), out amount);
+                        int.TryParse(lines[0].Trim(), out int size);
+                        int.TryParse(lines[1].Trim(), out int amount);
 
-                        allowedShips.Add(new Vector2i(size, amount));
+                        if (size > 1 && amount >= 1)
+                            allowedShips.Add(new Vector2i(size, amount));
                     }
                     /*
                     else if (line.StartsWith("GridSize:"))
@@ -87,7 +89,7 @@ namespace BattleShips
                     */
                 }
             }
-            
+            optionsLoaded = true;
         }
 
         /// <summary>
@@ -95,29 +97,26 @@ namespace BattleShips
         /// </summary>
         private static void CreateOptionsFile()
         {
-            if (!File.Exists(Directory.GetCurrentDirectory() + "/options.txt"))
-            {
-                var writer = File.CreateText(Directory.GetCurrentDirectory() + "/options.txt");
-                writer.WriteLine("# Comments can be made by using the # char");
-                writer.WriteLine("IP: 192.168.4.250");
-                writer.WriteLine("Port: 25000");
-                writer.WriteLine("# Ships should have 2 values.");
-                writer.WriteLine("# The first one is the size of the ship.");
-                writer.WriteLine("# The second on is the amount of that type ships");
-                writer.WriteLine("# The two numbers is seperated by . or ,");
-                writer.WriteLine("Ship: 2,2");
-                writer.WriteLine("Ship: 3,2");
-                writer.WriteLine("Ship: 4,1");
-                writer.WriteLine("Ship: 5,1");
-                /*
-                writer.WriteLine("GridSize: 10");
-                writer.WriteLine("CellWidth: 32");
-                writer.WriteLine("CellHeight: 32");
-                */
-                writer.Flush();
-                writer.Close();
-            }
-
+            var writer = File.CreateText(Directory.GetCurrentDirectory() + "/options.txt");
+            writer.WriteLine("# Comments can be made by using the # char");
+            writer.WriteLine("IP: 192.168.4.250");
+            writer.WriteLine("Port: 25000");
+            writer.WriteLine("# Ships should have 2 values.");
+            writer.WriteLine("# The first one is the size of the ship.");
+            writer.WriteLine("# The second on is the amount of that type ships");
+            writer.WriteLine("# The two numbers is seperated by . or ,");
+            writer.WriteLine("Ship: 2,1");
+            writer.WriteLine("Ship: 3,2");
+            writer.WriteLine("Ship: 4,1");
+            writer.WriteLine("Ship: 5,1");
+            /*
+            writer.WriteLine("GridSize: 10");
+            writer.WriteLine("CellWidth: 32");
+            writer.WriteLine("CellHeight: 32");
+            */
+            writer.Flush();
+            writer.Close();
+            firsteTimeSetup = true;
         }
     }
 }
